@@ -2,6 +2,8 @@
 FROM rocker/verse:latest
 MAINTAINER Cristian Capdevila dockerstan@defvar.org
 
+RUN export ADD=shiny && bash /etc/cont-init.d/add
+
 # Install some dependencies
 RUN apt-get update && \
 	  apt-get install -y --no-install-recommends apt-utils ed libnlopt-dev ccache awscli && \
