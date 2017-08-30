@@ -1,2 +1,6 @@
+CC=ccache gcc
+CXX=ccache g++
+SHLIB_CXXLD=ccache g++
+
 CFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -I/usr/local/opt/openssl/include -pipe
 CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-macro-redefined -flto -ffat-lto-objects  
