@@ -23,6 +23,9 @@ RUN mkdir -p $HOME/.R/ \
     && echo "options(mc.cores = parallel::detectCores())\n" >> /home/rstudio/.Rprofile
 
 # Install rstan
+RUN install2.r --error --deps TRUE devtools
+RUN R - e "library(devtools); \
+           install_version('BH', version = '1.62.0-1');"
 RUN install2.r --error --deps TRUE \
     data.table \
     devtools \
@@ -33,7 +36,8 @@ RUN install2.r --error --deps TRUE \
     rstantools \
     shinystan \
     ggmcmc \
-    && rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
-    && R -e "library(devtools); \
-             devtools::install_github('rmcelreath/rethinking',ref = 'Experimental'); \
-             devtools::install_github('hadley/multidplyr');"
+    mice
+RUN R -e "library(devtools); \
+          devtools::install_github('rmcelreath/rethinking',ref = 'Experimental'); \
+          devtools::install_github('hadley/multidplyr');"
+RUN rm -rf /tmp/downloaded_packages/ /tmp/*.rds
