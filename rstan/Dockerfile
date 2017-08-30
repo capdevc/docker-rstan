@@ -16,7 +16,7 @@ COPY files/Rprofile $HOME/.Rprofile
 # There's a problem with BH 1.64 and stan at the moment
 # https://github.com/stan-dev/rstan/issues/441
 RUN install2.r --error --deps TRUE devtools
-RUN R - e "library(devtools); \
+RUN R -e "library(devtools); \
            install_version('BH', version = '1.62.0-1');"
 
 # Install packages
