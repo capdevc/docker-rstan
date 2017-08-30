@@ -1,3 +1,4 @@
+# forked from jrnold/docker-stan
 FROM rocker/verse:latest
 MAINTAINER Jeffrey Arnold jeffrey.arnold@gmail.com
 
@@ -23,11 +24,16 @@ RUN mkdir -p $HOME/.R/ \
 
 # Install rstan
 RUN install2.r --error --deps TRUE \
+    data.table \
+    devtools \
     rstan \
-	loo \
-	bayesplot \
+	  loo \
+	  bayesplot \
     rstanarm \
     rstantools \
     shinystan \
     ggmcmc \
     && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+    && R -e "library(devtools); \
+             devtools::install_github('rmcelreath/rethinking',ref = 'Experimental'); \
+             devtools::install_github('hadley/multidplyr');"
