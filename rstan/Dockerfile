@@ -2,7 +2,7 @@
 FROM rocker/verse:latest
 MAINTAINER Cristian Capdevila dockerstan@defvar.org
 
-RUN export ADD=shiny && bash /etc/cont-init.d/add
+# RUN export ADD=shiny && bash /etc/cont-init.d/add
 
 # Install some dependencies
 RUN apt-get update && \
@@ -13,11 +13,9 @@ RUN apt-get update && \
 # Make ~/.R
 RUN mkdir -p /root/.R
 COPY files/Makevars /root/.R/Makevars
-COPY files/Rprofile /root/.Rprofile
 
 RUN mkdir -p /home/rstudio/.R
 COPY files/Makevars /home/rstudio/.R/Makevars
-COPY files/Rprofile /home/rstudio/.Rprofile
 
 # There's a problem with BH 1.64 and stan at the moment
 # https://github.com/stan-dev/rstan/issues/441
@@ -47,3 +45,9 @@ RUN R -e "library(devtools); \
 # Currently GenomicRanges doesn't seem to exist for # 3.4.1
 RUN install2.r --error data.table && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+
+COPY files/Rprofile /root/.Rprofile
+COPY files/Rprofile /home/rstudio/.Rprofile
+
+# Need this for shinystan to work
+RUN echo 'www-address=127.0.0.1' >> /etc/rstudio/rserver.conf
