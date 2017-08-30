@@ -44,4 +44,4 @@ RUN R -e "library(devtools); \
 # Install data.table. We do this seperately not to pull in the wierd "suggests"
 # Currently GenomicRanges doesn't seem to exist for # 3.4.1
 RUN install2.r --error data.table && \
-    rm -rf /tmp/downloaded_packages/ /tmp/*.rds && \
+    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
