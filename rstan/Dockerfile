@@ -50,4 +50,4 @@ COPY files/Rprofile /root/.Rprofile
 COPY files/Rprofile /home/rstudio/.Rprofile
 
 # Need this for shinystan to work
-RUN echo 'www-address=127.0.0.1' >> /etc/rstudio/rserver.conf
+# RUN echo 'www-address=127.0.0.1' >> /etc/rstudio/rserver.conf
