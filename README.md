@@ -21,5 +21,5 @@ This repository adds Richard McElreath's [rethinking](https://github.com/rmcelre
 - [mice](https://cran.r-project.org/web/packages/mice/index.html)
 
 
-This repository was initially forked from [jrnold/rstan](https://hub.docker.com/r/jrnold/rstan/)
+This repository was initially forked from [jrnold/rstan](https://hub.docker.com/r/jrnold/rstan/).
 
