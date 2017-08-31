@@ -33,6 +33,7 @@ RUN install2.r --error --deps TRUE \
     shinystan \
     ggmcmc \
     boot \
+    glmnet \
     mice && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
