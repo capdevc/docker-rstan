@@ -39,19 +39,22 @@ RUN install2.r --error --deps TRUE \
     mice && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
+# Install data.table. We do this seperately not to pull in the wierd "suggests"
+# Currently GenomicRanges doesn't seem to exist for R 3.4.1
+RUN install2.r --error data.table && \
+    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+
+# Install some additional packages
+RUN install2.r --error --deps TRUE \
+    caret \
+    pROC && \
+    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+
 # We want the experimental version of rethinking
 RUN R -e "library(devtools); \
           devtools::install_github('rmcelreath/rethinking',ref = 'Experimental'); \
           devtools::install_github('hadley/multidplyr');" && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
-# Install data.table. We do this seperately not to pull in the wierd "suggests"
-# Currently GenomicRanges doesn't seem to exist for R 3.4.1
-RUN install2.r --error data.table && \
-    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
-
 COPY files/Rprofile /root/.Rprofile
 COPY files/Rprofile /home/rstudio/.Rprofile
-
-# Need this for shinystan to work
-# RUN echo 'www-address=127.0.0.1' >> /etc/rstudio/rserver.conf
