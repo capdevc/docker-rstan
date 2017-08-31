@@ -6,7 +6,7 @@ MAINTAINER Cristian Capdevila dockerstan@defvar.org
 
 # Install some dependencies
 RUN apt-get update && \
-	  apt-get install -y --no-install-recommends apt-utils ed libnlopt-dev ccache awscli && \
+	  apt-get install -y --no-install-recommends apt-utils ed libnlopt-dev ccache awscli libglu1-mesa-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/
 
