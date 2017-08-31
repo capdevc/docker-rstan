@@ -34,6 +34,7 @@ RUN install2.r --error --deps TRUE \
     ggmcmc \
     brms \
     boot \
+    doMC \
     glmnet \
     mice && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds

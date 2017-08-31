@@ -13,12 +13,13 @@ This repository adds Richard McElreath's [rethinking](https://github.com/rmcelre
 
 
 ### other packages:
-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html)
+- [data.table](https://CRAN.R-project.org/package=data.table)
 - [multidplyr](https://github.com/hadley/multidplyr)
-- [brms](https://cran.r-project.org/web/packages/brms/index.html)
-- [glmnet](https://cran.r-project.org/web/packages/glmnet/index.html)
-- [boot](https://cran.r-project.org/web/packages/boot/index.html)
-- [mice](https://cran.r-project.org/web/packages/mice/index.html)
+- [brms](https://CRAN.R-project.org/package=brms)
+- [doMC](https://CRAN.R-project.org/package=doMC)
+- [glmnet](https://CRAN.R-project.org/package=glmnet)
+- [boot](https://CRAN.R-project.org/package=boot)
+- [mice](https://CRAN.R-project.org/package=mice)
 
 
 This repository was initially forked from [jrnold/rstan](https://hub.docker.com/r/jrnold/rstan/).
