@@ -32,6 +32,7 @@ RUN install2.r --error --deps TRUE \
     rstantools \
     shinystan \
     ggmcmc \
+    brms \
     boot \
     glmnet \
     mice && \
@@ -44,7 +45,7 @@ RUN R -e "library(devtools); \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
 # Install data.table. We do this seperately not to pull in the wierd "suggests"
-# Currently GenomicRanges doesn't seem to exist for # 3.4.1
+# Currently GenomicRanges doesn't seem to exist for R 3.4.1
 RUN install2.r --error data.table && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
