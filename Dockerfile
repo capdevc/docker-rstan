@@ -46,8 +46,11 @@ RUN install2.r --error data.table && \
 
 # Install some additional packages
 RUN install2.r --error --deps TRUE \
+    purrr \
+    DMwR \
     caret \
-    pROC && \
+    pROC  \
+    PRROC && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
 # We want the experimental version of rethinking
