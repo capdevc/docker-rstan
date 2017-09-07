@@ -61,3 +61,7 @@ RUN R -e "library(devtools); \
 
 COPY files/Rprofile /root/.Rprofile
 COPY files/Rprofile /home/rstudio/.Rprofile
+
+# An attempt to fix R sessions crashing when running Stan. Possible disk space issue.
+# Mount /tmp to the host /tmp dir
+VOLUME ["/tmp"]
