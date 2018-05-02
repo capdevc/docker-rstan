@@ -1,14 +1,57 @@
 # forked from jrnold/docker-stan
-FROM rocker/verse:latest
+FROM rocker/verse:3.4.4
 MAINTAINER Cristian Capdevila dockerstan@defvar.org
 
 # RUN export ADD=shiny && bash /etc/cont-init.d/add
 
 # Install some dependencies
 RUN apt-get update && \
-	  apt-get install -y --no-install-recommends apt-utils ed libnlopt-dev ccache awscli libglu1-mesa-dev && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        autoconf \
+        automake \
+        cmake \
+        libtool \
+        pkg-config \
+        sudo \
+        bzip2 \
+        ca-certificates \
+        curl \
+        gfortran \
+        git \
+        locales \
+        unzip \
+        wget \
+        zip \
+        ssh \
+        bzip2 \
+        ca-certificates \
+        curl \
+        fuse \
+        mime-support \
+        libcurl4-gnutls-dev \
+        libfuse-dev \
+        libssl-dev \
+        libgl1-mesa-glx \
+        libxml2-dev \
+        apt-utils \
+        ed \
+        libnlopt-dev \
+        ccache \
+        awscli \
+        libglu1-mesa-dev \
+        && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/
+
+# Clone, build and install s3fs
+RUN git clone https://github.com/s3fs-fuse/s3fs-fuse.git /tmp/s3fs-fuse && \
+    cd /tmp/s3fs-fuse && \
+    ./autogen.sh && \
+    ./configure && \
+    make && \
+    sudo make install && \
+    rm -rf /tmp/s3*
 
 # Make ~/.R
 RUN mkdir -p /root/.R
@@ -17,17 +60,11 @@ COPY files/Makevars /root/.R/Makevars
 RUN mkdir -p /home/rstudio/.R
 COPY files/Makevars /home/rstudio/.R/Makevars
 
-# There's a problem with BH 1.64 and stan at the moment
-# https://github.com/stan-dev/rstan/issues/441
-RUN R -e "library(devtools); \
-           install_version('BH', version = '1.62.0-1');" && \
-    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
-
 # Install packages
 RUN install2.r --error --deps TRUE \
     rstan \
-	  loo \
-	  bayesplot \
+    loo \
+    bayesplot \
     rstanarm \
     rstantools \
     shinystan \
@@ -36,31 +73,22 @@ RUN install2.r --error --deps TRUE \
     boot \
     doMC \
     glmnet \
-    mice && \
-    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
-
-# Install data.table. We do this seperately not to pull in the wierd "suggests"
-# Currently GenomicRanges doesn't seem to exist for R 3.4.1
-RUN install2.r --error data.table && \
-    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
-
-# Install some additional packages
-RUN install2.r --error --deps TRUE \
+    mice \
+    data.table \
     purrr \
     DMwR \
     caret \
     pROC  \
-    PRROC && \
+    PRROC \
+    && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
-# We want the experimental version of rethinking
-RUN R -e "library(devtools); \
-          devtools::install_github('rmcelreath/rethinking',ref = 'Experimental'); \
-          devtools::install_github('hadley/multidplyr');" && \
-    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
-
+COPY files/mount-s3fs.sh /etc/cont-init.d/ZZ-mount-s3fs
 COPY files/Rprofile /root/.Rprofile
 COPY files/Rprofile /home/rstudio/.Rprofile
+
+RUN mkdir /home/rstudio/notebooks
+RUN chown rstudio /home/rstudio/notebooks
 
 # An attempt to fix R sessions crashing when running Stan. Possible disk space issue.
 # Mount /tmp to the host /tmp dir
