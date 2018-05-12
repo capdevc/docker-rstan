@@ -1,4 +1,4 @@
-FROM rocker/verse:3.5.0
+FROM rocker/verse:latest
 MAINTAINER Cristian Capdevila dockerstan@defvar.org
 
 # Install some dependencies
