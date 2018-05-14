@@ -94,6 +94,8 @@ RUN install2.r --error --deps TRUE \
     PRROC \
     bsts \
     CausalImpact \
+    survival \
+    flexsurv \
     && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
