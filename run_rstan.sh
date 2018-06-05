@@ -41,9 +41,11 @@ docker run --name=rstan \
            capdevc/rstan:${VERSION}
 
 # If we opened a tunnel, kill it.
-if [[ -n ${TUNNEL_PID} ]]; then
-    echo "Killing ssh tunnel..."
+if [[ -n "${TUNNEL_PID}" ]]; then
+    echo "Killing autossh process ${TUNNEL_PID}..."
     kill -9 ${TUNNEL_PID}
+    echo "Killing ssh processes"
+    pkill -9 -f "ssh -L .*$HOST_IP"
 fi
 
 echo "Done"
