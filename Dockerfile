@@ -96,6 +96,8 @@ RUN install2.r --error --deps TRUE \
     CausalImpact \
     survival \
     flexsurv \
+    survAUC \
+    tictoc \
     && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
