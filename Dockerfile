@@ -1,4 +1,4 @@
-FROM rocker/verse:latest
+FROM rocker/verse:3.5.1
 MAINTAINER Cristian Capdevila dockerstan@defvar.org
 
 # Install some dependencies
@@ -38,6 +38,7 @@ RUN apt-get update && \
         ccache \
         libglu1-mesa-dev \
         python3 \
+        libopenblas-dev \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/
@@ -66,8 +67,7 @@ RUN pip3 --no-cache-dir install s3cmd awscli boto3
 RUN mkdir -p /root/.R
 COPY files/Makevars /root/.R/Makevars
 
-RUN mkdir -p /home/rstudio/.R
-COPY files/Makevars /home/rstudio/.R/Makevars
+ENV CCACHE_BASEDIR /tmp/
 
 # Install packages
 RUN install2.r --error --deps TRUE \
@@ -83,7 +83,9 @@ RUN install2.r --error --deps TRUE \
     boot \
     doMC \
     glmnet \
+    mcglm \
     mice \
+    AID \
     data.table \
     fasttime \
     anytime \
@@ -97,7 +99,16 @@ RUN install2.r --error --deps TRUE \
     survival \
     flexsurv \
     survAUC \
+    statmod \
+    tweedie \
+    cplm \
     tictoc \
+    && \
+    rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+
+RUN install2.r --error --deps TRUE \
+    -r 'https://inla.r-inla-download.org/R/stable' \
+    INLA \
     && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
@@ -107,13 +118,10 @@ RUN install2.r --error --deps TRUE \
     && \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
-COPY files/mount-s3fs.sh /etc/cont-init.d/ZY-mount-s3fs
-COPY files/setup-aws.sh /etc/cont-init.d/ZZ-setup-aws
 COPY files/Rprofile /root/.Rprofile
-COPY files/Rprofile /home/rstudio/.Rprofile
-
-RUN mkdir /home/rstudio/notebooks
-RUN chown rstudio /home/rstudio/notebooks
+COPY files/mount-s3fs.sh /etc/cont-init.d/ZX-mount-s3fs
+COPY files/setup-R.sh /etc/cont-init.d/ZY-setup-R
+COPY files/setup-aws.sh /etc/cont-init.d/ZZ-setup-aws
 
 # An attempt to fix R sessions crashing when running Stan. Possible disk space issue.
 # Mount /tmp to the host /tmp dir

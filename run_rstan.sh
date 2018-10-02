@@ -9,10 +9,12 @@ if [[ $# -ge 2 ]]; then
 fi
 
 VERSION=${1:-latest}
+USERID=1000
 
 if [[ -n $DOCKER_MACHINE_NAME ]]; then
 
     HOST_IP=$(docker-machine ip ${DOCKER_MACHINE_NAME})
+    USERID=1000
 
     # set up port forwarding. Kitchen sinking here since different images use different ports
     echo "Setting up ip port forwarding..."
@@ -32,9 +34,11 @@ docker run --name=rstan \
            --rm -it \
            -p 8787:8787 \
            -p 3838:3838 \
+           -v /tmp:/tmp \
            --privileged \
            -e ROOT=TRUE \
-           -e USERID=1000 \
+           -e PASSWORD=prog \
+           -e USERID=${USERID} \
            -e AWS_ACCESS_KEY_ID \
            -e AWS_SECRET_ACCESS_KEY \
            -e NOTEBOOK_PATH='mdv-notebooks:/cristian/notebooks' \
