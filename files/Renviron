@@ -1,0 +1,3 @@
+TMP=/home/${USER}/tmp
+TEMP=/home/${USER}/tmp
+TMPDIR=/home/${USER}/tmp
