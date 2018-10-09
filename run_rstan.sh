@@ -9,7 +9,7 @@ if [[ $# -ge 2 ]]; then
 fi
 
 VERSION=${1:-latest}
-USERID=1000
+USER=rstudio
 
 if [[ -n $DOCKER_MACHINE_NAME ]]; then
 
@@ -34,11 +34,12 @@ docker run --name=rstan \
            --rm -it \
            -p 8787:8787 \
            -p 3838:3838 \
-           -v /tmp:/tmp \
+           -v /tmp \
+           -e DISABLE_AUTH=true \
+           -e USER=${USER} \
            --privileged \
            -e ROOT=TRUE \
            -e PASSWORD=prog \
-           -e USERID=${USERID} \
            -e AWS_ACCESS_KEY_ID \
            -e AWS_SECRET_ACCESS_KEY \
            -e NOTEBOOK_PATH='mdv-notebooks:/cristian/notebooks' \

@@ -58,7 +58,7 @@ RUN git clone https://github.com/s3fs-fuse/s3fs-fuse.git /tmp/s3fs-fuse && \
 
 # Install pip
 RUN curl -SsL -O https://bootstrap.pypa.io/get-pip.py && \
-    python get-pip.py 'pip==9' && \
+    python get-pip.py && \
     rm -f get-pip.py
 
 RUN pip3 --no-cache-dir install s3cmd awscli boto3
@@ -119,6 +119,7 @@ RUN install2.r --error --deps TRUE \
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
 COPY files/Rprofile /root/.Rprofile
+COPY files/Renviron /root/.Renviron
 COPY files/mount-s3fs.sh /etc/cont-init.d/ZX-mount-s3fs
 COPY files/setup-R.sh /etc/cont-init.d/ZY-setup-R
 COPY files/setup-aws.sh /etc/cont-init.d/ZZ-setup-aws
